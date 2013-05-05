@@ -3,7 +3,7 @@ var express    = require('express')
   , connect    = require('connect')
   , http       = require("http")
   , fs         = require("fs")
-  , app        = module.exports = express.createServer()
+  , app = express()
   , configFile = __dirname + "/" + (process.env.CONFIG || "config/config.json")
   , config     = JSON.parse(fs.readFileSync(configFile))
   , airbrake   = (config.airbrake ? require("airbrake").createClient(config.airbrake) : null)
@@ -73,6 +73,7 @@ if (!module.parent || process.env.FORCE_PID) {
 
 // Only listen on $ node app.js
 if (!module.parent) {
-  app.listen(process.env.PORT || 3000)
-  console.log("Express server listening on port %d", app.address().port)
+  var port = process.env.PORT || 3000
+  app.listen(port)
+  console.log("Express server listening on port %d.", port)
 }
